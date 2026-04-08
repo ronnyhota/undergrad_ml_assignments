@@ -7456,41 +7456,6 @@ main {
 <li>The electronics product that had the nicest characteristics for our lab is: Bluetooth Speakers</li>
 <li>The top 5 brands are Bose, JBL, Anker, DOSS, OontZ, plus the <strong>outside option</strong> of Other, which are a collection of small and cheap brands with typically bad reviews</li>
 <li>We want to look at sales data (prices, choices) and infer whether the market is performing well for consumers: Is it competitive? Are prices reasonable or not, relative to cost?</li>
-<li>Most of the data are available on GitHub, but the largest data file is here: <a href="https://drive.google.com/drive/folders/1QlJt7sV12XjB_wevcRc0Nog3af4knHwS?usp=sharing">https://drive.google.com/drive/folders/1QlJt7sV12XjB_wevcRc0Nog3af4knHwS?usp=sharing</a></li>
-</ul>
-</div>
-</div>
-</div>
-</div></section><section>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=66c855c5">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Herfindahl-Hirschman-Index">Herfindahl-Hirschman Index<a class="anchor-link" href="#Herfindahl-Hirschman-Index">¶</a></h2><ul>
-<li>The <strong>market share for brand $i$</strong> is the proportional of total sales that correspond to $i$'s product</li>
-<li>So if $N$ units are sold in the market and $n_i$ are from brand $i$, $s_i = n_i/N$</li>
-<li>Anti-trust authorities like the DOJ and FTC regularly compute the Herfindahl-Hirschman Index as a metric of how concentracted a market is:
-$$
-HHI = \sum_{i=1}^N s_i^2
-$$
-Plot the HHI over time for bluetooth speakers</li>
-<li>Anti-trust authorities consider an HHI &lt; 1500 to be competitive, 1500 to 2500 to be moderately concentrated, and above 2500 to be highly concentrated. Is this market relatively competitive, or not?</li>
-</ul>
-</div>
-</div>
-</div>
-</div></section><section>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=494fcd85">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="1.-Consumer-EDA">1. Consumer EDA<a class="anchor-link" href="#1.-Consumer-EDA">¶</a></h2><p>Load <code>demand_1.parquet</code>. This is consumer level data, which is already substantially cleaned and organized from the intial Amazon review dump.</p>
-<ul>
-<li>Make kernel density plots for the price and average rating of the products, by brand, as well as describe tables grouped by brand. Which are most expensive? Which are most popular?</li>
 </ul>
 </div>
 </div>
@@ -7502,11 +7467,10 @@ Plot the HHI over time for bluetooth speakers</li>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="2.-Brand-EDA">2. Brand EDA<a class="anchor-link" href="#2.-Brand-EDA">¶</a></h2><p>Load <code>demand_2.parquet</code>. This is brand-level data, which is already consolidated from the consumer level data.</p>
+<h2 id="1.-EDA">1. EDA<a class="anchor-link" href="#1.-EDA">¶</a></h2><p>Load <code>demand_2.parquet</code>. This is brand-level data, which is already consolidated from the many TB of Amazon consumer level data.</p>
 <ul>
-<li>Make plots of the sales and average prices of each brand in each year</li>
-<li>Plot the market shares of each brand in each year</li>
-<li>Compute the HHI of the market over time, and plot it</li>
+<li>Make kernel density plots for the price and average rating of the products, by brand, as well as describe tables grouped by brand. Which are most expensive? Which are most popular?</li>
+<li>Make plots of the sales, average prices, and market shares of each brand in each year</li>
 </ul>
 </div>
 </div>
@@ -7538,12 +7502,12 @@ Plot the HHI over time for bluetooth speakers</li>
 <li>Imagine consumer $i$ deciding between different brands $j=1, 2, ... , J$ in period $t$, with prices $p_{j}$ and characteristics $x_{jt}$</li>
 <li>The <strong>mean utility</strong> provided by product $j$ to consumer $i$ is
 $$
-\delta_{jt} = b_0  + \sum_{\ell =1}^L b_\ell x_{jt\ell}- b_{\text{price}} p_{jt}
+\delta_{jt} = b_0  + \sum_{\ell =1}^L b_\ell x_{jt\ell} + b_{\text{price}} p_{jt}
 $$</li>
 <li>So consumers get an average benefit that depends on product characteristics, and then the price reduces that benefit</li>
 <li>When we add an error term and assume that it has the logistic distribution, this becomes multinomial logistic regression: Consumer $i$ gets a shock $\varepsilon_{ijt}$, and gets utilities for each brand $j$ of
 $$
-U_{ijt} = \delta_{ijt} + \varepsilon_{ijt} = b_0  + \sum_{\ell =1}^L b_\ell x_{jt\ell}- b_{\text{price}} p_{jt}+ \varepsilon_{ijt}
+U_{ijt} = \delta_{ijt} + \varepsilon_{ijt} = b_0  + \sum_{\ell =1}^L b_\ell x_{jt\ell} + b_{\text{price}} p_{jt}+ \varepsilon_{ijt}
 $$</li>
 </ul>
 </div>
@@ -7603,11 +7567,11 @@ $$</li>
 <h2 id="Log-Linearizing-the-Demand-System">Log-Linearizing the Demand System<a class="anchor-link" href="#Log-Linearizing-the-Demand-System">¶</a></h2><ul>
 <li>So, we can convert from consumer-level data to brand-level data, and estimate demand using product shares instead of individual consumer choices:
 $$
-\underbrace{\log(s_{jt}) - \log(s_{Kt})}_{\text{Difference in Log Shares}} = \underbrace{b_0  + \sum_{\ell =1}^L b_\ell x_{jt\ell}- b_{\text{price}} p_{jt}}_{\text{Linear Model}}
+\underbrace{\log(s_{jt}) - \log(s_{Kt})}_{\text{Difference in Log Shares}} = \underbrace{b_0  + \sum_{\ell =1}^L b_\ell x_{jt\ell} + b_{\text{price}} p_{jt}}_{\text{Linear Model}}
 $$</li>
 <li>The regression we want to run is:
 $$
-\underbrace{\log(s_{jt}) - \log(s_{Kt})}_{\text{Difference in Log Shares}} = \underbrace{b_0  + \sum_{\ell =1}^L b_\ell x_{jt\ell}- b_{\text{price}} p_{jt}}_{\text{Linear Model}}
+\underbrace{\log(s_{jt}) - \log(s_{Kt})}_{\text{Difference in Log Shares}} = \underbrace{b_0  + \sum_{\ell =1}^L b_\ell x_{jt\ell} +  b_{\text{price}} p_{jt}}_{\text{Linear Model}}
 $$</li>
 <li>So we just compute the log share differences on the left, and use it as our usual $y_{jt}$, and feature engineer the right-hand side</li>
 <li>Learning about consumer preferences and product positioning is <strong>quantitative marketing</strong></li>
@@ -7622,7 +7586,7 @@ $$</li>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="3.-Estimate-the-Demand-System">3. Estimate the Demand System<a class="anchor-link" href="#3.-Estimate-the-Demand-System">¶</a></h2><p>Load <code>demand_3.parquet</code>. This is brand-level data, which is already consolidated from the consumer level data and aggregated across products sold by that brand.</p>
+<h2 id="2.-Estimate-the-Demand-System">2. Estimate the Demand System<a class="anchor-link" href="#2.-Estimate-the-Demand-System">¶</a></h2><p>Load <code>demand_3.parquet</code>. This is brand-level data, which is already consolidated from the consumer level data and aggregated across products sold by that brand.</p>
 <ul>
 <li>The log share differences are already computed, as <code>log_share_diff</code></li>
 <li>Regress those values on price, waterproof flag, party flag, voice assistant flag, year dummies, average rating, and brand dummies</li>
@@ -7659,19 +7623,20 @@ $$</li>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="Inferring-Cost">Inferring Cost<a class="anchor-link" href="#Inferring-Cost">¶</a></h2><ul>
-<li>OK, buckle up</li>
+<li>How do we tie models to domain knowledge?</li>
 <li>Firm $j$ in period $t$ is maximizing its profits:
 $$
 \pi_{jt} = \underbrace{s_{jt}(p_{jt})}_{\text{Quantity Sold}} \quad \underbrace{(p_{jt}-c_{jt})}_{\text{Profit per Unit}}
 $$</li>
 <li>That means that, at a maximum, it must be true that
 $$
-\underbrace{s_{jt}'(p_{jt})(p_{jt}-c_{jt})}_{\text{Lost sales on the margin}} + \underbrace{s_{jt}(p_{jt}-c_{jt})}_{\text{Profits on units sold}} = 0
+\pi_{jt}'(p_{jt}^*) = \underbrace{s_{jt}'(p_{jt}^*)(p_{jt}^*-c_{jt})}_{\text{Lost sales on the margin}} + \underbrace{s_{jt}(p_{jt}^*)}_{\text{Additional profits on remaining units sold}} = 0
 $$</li>
 <li>If we re-arrange to solve for $c_{jt}$, we get
 $$
 \hat{c}_{jt} = p_{jt} + \dfrac{s_{jt}(p_{jt})}{s_{jt}'(p_{jt})}
 $$</li>
+<li>This inverts demand and price to tell us about costs</li>
 <li>We can estimate the firm's unobserved, true cost of its product from demand behavior and prices</li>
 <li>Notice that price always exceeds marginal cost, here: Brands always price in excess of true cost</li>
 </ul>
@@ -7702,7 +7667,7 @@ $$</li>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="4.-Market-Fundamentals">4. Market Fundamentals<a class="anchor-link" href="#4.-Market-Fundamentals">¶</a></h2><p>Load <code>demand_4.parquet</code>. I've already computed $s_{jt}'(p_{jt})$ as <code>dprime</code></p>
+<h2 id="3.-Market-Fundamentals">3. Market Fundamentals<a class="anchor-link" href="#3.-Market-Fundamentals">¶</a></h2><p>Load <code>demand_4.parquet</code>. I've already computed $s_{jt}'(p_{jt})$ as <code>dprime</code></p>
 <ul>
 <li>Compute the <strong>unit cost</strong> $\hat{c}_{jt}$ for each Brand in each period</li>
 <li>Compute the <strong>mark-up</strong> in each period, $markup_{jt} = p_{jt} - \hat{c}_{jt}$</li>
@@ -7721,7 +7686,7 @@ $$</li>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="5.-Wrapping-Up">5. Wrapping Up<a class="anchor-link" href="#5.-Wrapping-Up">¶</a></h2><p>The DOJ and FTC use these kinds of models for anti-trust investigations. Online commerce is the target of recent FTC regulatory actions, in particular towards Amazon.</p>
+<h2 id="4.-Welfare">4. Welfare<a class="anchor-link" href="#4.-Welfare">¶</a></h2><p>The DOJ and FTC use these kinds of models for anti-trust investigations. Online commerce is the target of recent FTC regulatory actions, in particular towards Amazon.</p>
 <ol>
 <li>Do you think this market is relatively competitive?</li>
 <li>Are the mark-ups sizeable? Are they worth pursuing regulatory or industrial policy over, or even an anti-trust lawsuit?</li>
